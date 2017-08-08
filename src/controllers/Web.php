@@ -46,27 +46,4 @@ class Web extends \erdiko\Controller
 
         return $action;
     }
-
-    /**
-     * Get loaded theme settings
-     */
-    public function getThemeSettings()
-    {
-        return $this->container->get('settings')['theme'];
-    }
-
-    /**
-     * Render theme using the DI container
-     */
-    public function render($response, $view, $themeData)
-    {
-        if(is_object($themeData)) {
-            if($view === null)
-                $view = $themeData->getDefaultView();
-
-            $themeData = $themeData->getData();
-        }
-
-        return $this->container->theme->render($response, $view, $themeData);
-    }
 }
