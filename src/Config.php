@@ -42,7 +42,7 @@ class Config
 
         // @note if we remove ERDIKO_ROOT it will be more portable
         $subfolder = "config";
-        $filename = ERDIKO_ROOT."/contexts/{$context}/{$subfolder}/{$name}.json";
+        $filename = getenv("ERDIKO_ROOT")."/contexts/{$context}/{$subfolder}/{$name}.json";
 
         return static::getConfigFile($filename);
     }
@@ -67,7 +67,7 @@ class Config
         } else {
             throw new \Exception("Config file not found, $file");
         }
-        
+
         return $json;
     }
 }

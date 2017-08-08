@@ -18,13 +18,13 @@ use \Psr\Log\LogLevel;
 
 class Logger extends File implements LoggerInterface
 {
-    
+
     /** Log files */
     protected $_logFiles = array(
         "default" => "system.log",
     );
     protected $_defaultPath = '/var/logs';
-    
+
     /**
      * Constructor
      *
@@ -37,19 +37,19 @@ class Logger extends File implements LoggerInterface
         if (!empty($logFiles)) {
             $this->_logFiles = array_merge($this->_logFiles, array_change_key_case($logFiles));
         }
-        
+
         // Set the logging directory
         if (!empty($logDir)) {
             if (is_dir($logDir)) {
                 $this->_filePath = $logDir; // fully qualified & valid path
             } else {
-                $this->_filePath = \ERDIKO_ROOT.$logDir; // otherwise assume it's relative to the root
+                $this->_filePath = getenv("ERDIKO_ROOT").$logDir; // otherwise assume it's relative to the root
             }
         } else {
-            $this->_filePath = \ERDIKO_ROOT.$this->_defaultPath;
+            $this->_filePath = getenv("ERDIKO_ROOT").$this->_defaultPath;
         }
     }
-    
+
     /**
      * Log
      *

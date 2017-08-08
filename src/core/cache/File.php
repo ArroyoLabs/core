@@ -18,7 +18,7 @@ class File extends \erdiko\core\datasource\File implements CacheInterface
     public function __construct($cacheDir = null)
     {
         if (!isset($cacheDir)) {
-            $cacheDir = ERDIKO_VAR."/cache";
+            $cacheDir = getenv("ERDIKO_ROOT")."/var/cache";
         }
         parent::__construct($cacheDir);
     }
@@ -46,7 +46,7 @@ class File extends \erdiko\core\datasource\File implements CacheInterface
         $data = json_encode($data);
         $this->write($data, $filename);
     }
-    
+
     /**
      * Get Key
      *
@@ -65,7 +65,7 @@ class File extends \erdiko\core\datasource\File implements CacheInterface
 
         return json_decode($value, true);
     }
-    
+
     /**
      * Delete a key
      *

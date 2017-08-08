@@ -13,13 +13,13 @@ namespace erdiko\controllers;
 class Web extends \erdiko\Controller
 {
     /**
-     * Invoke 
+     * Invoke
      * @param Request $request
      * @param Response $response
      * @param array $args
-     * @return string $action method name 
+     * @return string $action method name
      */
-    public function __invoke($request, $response, $args) 
+    public function __invoke($request, $response, $args)
     {
         $action = $this->determineAction($request, $args);
         // $this->container->logger->debug("Controller action: ".print_r($action, true));
@@ -28,10 +28,10 @@ class Web extends \erdiko\Controller
 
     /**
      * Determine action
-     * 
+     *
      * @param Request $request
      * @param array $args
-     * @return string $action method name 
+     * @return string $action method name
      */
     protected function determineAction($request, $args) : string
     {
@@ -45,5 +45,28 @@ class Web extends \erdiko\Controller
             throw new \Exception("action does not exist");
 
         return $action;
+    }
+
+    /**
+     * Get loaded theme settings
+     */
+    public function getThemeSettings()
+    {
+        return $this->container->get('settings')['theme'];
+    }
+
+    /**
+     * Render theme using the DI container
+     */
+    public function render($response, $view, $themeData)
+    {
+        if(is_object($themeData)) {
+            if($view === null)
+                $view = $themeData->getDefaultView();
+
+            $themeData = $themeData->getData();
+        }
+
+        return $this->container->theme->render($response, $view, $themeData);
     }
 }

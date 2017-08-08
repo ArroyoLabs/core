@@ -18,12 +18,12 @@ class Ajax extends \erdiko\Controller
    */
     public function __construct()
     {
-        $this->_webroot = ERDIKO_ROOT;
+        $this->_webroot = getenv("ERDIKO_ROOT");
         $this->_response = new \erdiko\core\AjaxResponse;
     }
 
-    /** 
-     * Before 
+    /**
+     * Before
      */
     public function _before()
     {
