@@ -4,15 +4,15 @@
  *
  * @category    Erdiko
  * @package     Core
- * @copyright   Copyright (c) 2016, Arroyo Labs, http://www.arroyolabs.com
+ * @copyright   2012-2017 Arroyo Labs, Inc. http://www.arroyolabs.com
  * @author      Leo Daidone, leo@arroyolabs.com
  */
 
-namespace erdiko\core;
+namespace erdiko;
 
 use ToroHook;
 
-class ErrorHandler 
+class ErrorHandler
 {
 	public static function init()
 	{
@@ -70,7 +70,7 @@ class ErrorHandler
 	public static function fatalErrorShutdownHandler()
 	{
 		$last_error = error_get_last();
-		static::errorHandler(E_ERROR, 
+		static::errorHandler(E_ERROR,
 			$last_error['message'], $last_error['file'], $last_error['line']);
 	}
 
