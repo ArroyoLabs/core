@@ -8,7 +8,7 @@
  * @copyright   2012-2017 Arroyo Labs, Inc. http://www.arroyolabs.com
  * @author      John Arroyo <john@arroyolabs.com>
  */
-namespace erdiko\core;
+namespace erdiko;
 
 
 class Helper
@@ -28,7 +28,7 @@ class Helper
     {
         if(empty($context))
             $context = getenv('ERDIKO_CONTEXT');
-        
+
         $routes = static::getRoutes($context);
         Toro::serve($routes);
     }
@@ -48,7 +48,7 @@ class Helper
         }
         return  $view->toHtml();
     }
-    
+
     /**
      * Read JSON config file and return array
      *
@@ -69,22 +69,23 @@ class Helper
         } else {
             throw new \Exception("Config file not found, $filename");
         }
-        
+
         return $json;
     }
-    
+
     /**
      * Get configuration
      */
     public static function getConfig($name = 'application', $context = null)
     {
         if($context == null)
-            $context = getenv('ERDIKO_CONTEXT');
+            $filename = getenv('ERDIKO_ROOT')."/config/{$name}.json";
+        else
+            $filename = getenv('ERDIKO_ROOT')."/config/{$context}/{$name}.json";
 
-        $filename = ERDIKO_APP."/config/{$context}/{$name}.json";
         return static::getConfigFile($filename);
     }
-    
+
     /**
      * Get the compiled application routes from the config files
      *
@@ -96,10 +97,10 @@ class Helper
             $context = getenv('ERDIKO_CONTEXT');
         $file = ERDIKO_APP."/config/{$context}/routes.json";
         $applicationConfig = static::getConfigFile($file);
-        
+
         return $applicationConfig['routes'];
     }
-    
+
     /**
      * Send email
      * @todo add ways to swap out ways of sending
@@ -109,10 +110,10 @@ class Helper
         $headers = "From: $fromEmail\r\n" .
             "Reply-To: $fromEmail\r\n" .
             "X-Mailer: PHP/" . phpversion();
-        
+
         return mail($toEmail, $subject, $body, $headers);
     }
-    
+
     /**
      * log message to log file
      * If you enter null for level it will default to 'debug'
@@ -168,7 +169,7 @@ class Helper
     {
         return self::log(\Psr\Log\LogLevel::ERROR, $message, $context);
     }
-    
+
     /**
      * Get the configured cache instance using name
      *
@@ -178,7 +179,7 @@ class Helper
     {
         $context = getenv('ERDIKO_CONTEXT');
         $config = static::getConfig("application");
-        
+
         if (isset($config["cache"][$cacheType])) {
             $cacheConfig = $config["cache"][$cacheType];
             $class = "erdiko\core\cache\\".$cacheConfig["type"];
